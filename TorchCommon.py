@@ -26,7 +26,7 @@ def train(model, train_loader, device, optimizer, criterion, epoch):
         optimizer.zero_grad()
 
         # Feed training data to model
-        y_hat = model.feed_forward(image)
+        y_hat = model(image)
 
         # average of mini-batch loss & mini-batch accuracy
         loss = criterion(y_hat, label)
@@ -71,7 +71,7 @@ def valid(model, valid_loader, device, criterion):
             image, label = image.to(device), label.to(device)
 
             # Feed training data to model
-            y_hat = model.feed_forward(image)
+            y_hat = model(image)
 
             # average of mini-batch loss & mini-batch accuracy
             loss = criterion(y_hat, label)
@@ -129,7 +129,7 @@ def test(untrained_model, test_loader, device, criterion, root):
         image, label = image.to(device), label.to(device)
 
         # Feed training data to model
-        y_hat = model.feed_forward(image)
+        y_hat = model(image)
 
         # average of mini-batch loss & mini-batch accuracy
         loss = criterion(y_hat, label)
