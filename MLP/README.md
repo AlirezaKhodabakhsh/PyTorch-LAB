@@ -22,10 +22,7 @@ tensorboard --logdir=<tensorboard_folder>
 **NOTE:**
 > Sure that local directory is in where <tensorboard_folder> exist.
 
-## Creating a loss and accuracy plot
-### Independent plots
-This perform by `add_scalar` statement.
-##### new codes
+## Loss/Accuracy Plot (independently)
 ```python
 ...
 ...
@@ -40,12 +37,11 @@ for epoch in range(1,epochs+1):
         writer.close()
         # -NEW- TensorBoard process
 ```
-##### results
+
 ![](./figs/scaler_acc.jpg)
 ![](./figs/scaler_loss.jpg)
-### Hold on plots
-This perform by `add_scalars` statement.
-##### new codes
+
+## Loss/Accuracy Plot (hold on)
 ```python
 ...
 ...
@@ -59,13 +55,35 @@ for epoch in range(1,epochs+1):
         # -NEW- TensorBoard process
 writer.close()
 ```
-##### results
+
 ![](./figs/add_scalers.jpg)
 
-## Graph
+## Histogram (Parameters)
+```python
+...
+...
+step=0
+for epoch in range(1,epochs+1):
+    for iter_train, (image, label) in enumerate(train_loader, 1):
+        ...
+        ...
+        # -NEW- TensorBoard process
+        writer.add_histogram("FC1_Weights", model.fc1.weight, global_step=step)
+        writer.add_histogram("FC2_Weights", model.fc2.weight, global_step=step)
+        writer.add_histogram("FC3_Weights", model.fc3.weight, global_step=step)
+        step+=1
+        # -NEW- TensorBoard process
+writer.close()
+```
+
+![](./figs/histogram_fc1.jpg)
+![](./figs/histogram_fc2.jpg)
+![](./figs/histogram_fc3.jpg)
+
+## Computation Graph
 **NOTE**
 > Sure that name of method `def forward(self,x)` is `forward`
-##### new codes
+
 ```python
 # Hyperparaameter
 batch_size=64
@@ -86,34 +104,11 @@ writer.add_graph(model, image)
 # -NEW- TensorBoard process
 writer.close()
 ```
-##### results
+
 ![](./figs/graph.jpg)
 
-## Histogram
-##### new codes
-```python
-...
-...
-step=0
-for epoch in range(1,epochs+1):
-    for iter_train, (image, label) in enumerate(train_loader, 1):
-        ...
-        ...
-        # -NEW- TensorBoard process
-        writer.add_histogram("FC1_Weights", model.fc1.weight, global_step=step)
-        writer.add_histogram("FC2_Weights", model.fc2.weight, global_step=step)
-        writer.add_histogram("FC3_Weights", model.fc3.weight, global_step=step)
-        step+=1
-        # -NEW- TensorBoard process
-writer.close()
-```
-##### results
-![](./figs/histogram_fc1.jpg)
-![](./figs/histogram_fc2.jpg)
-![](./figs/histogram_fc3.jpg)
+## mini-batch images (every iteration)
 
-## mini-batch images
-##### new code
 ```python
 ...
 ...
@@ -127,13 +122,13 @@ for epoch in range(1,epochs+1):
         # -NEW- TensorBoard process
 writer.close()
 ```
-##### result
+
 ![](./figs/mini-batch.gif)
 
-## mini-batch signals
+## mini-batch signals (every iteration)
 
 ## Hyperparameters Searching
-##### new code
+
 ```python
 # Hyperparaameter
 epochs=1
@@ -161,11 +156,12 @@ for batch_size in [10,100,1000]:
         # -NEW- TensorBoard process
         writer.close()
 ```
-##### result
+
+
 ![](./figs/hyperparam_searching.gif)
 
 ## Embedding Projector
-##### new codes
+
 ```python
 # desired datas that you want visualize
 images, labels = train_data.data[:1000], train_data.targets[:1000]
@@ -190,5 +186,6 @@ writer.add_embedding(features,
                      label_img =label_image )
 writer.close()
 ```
-##### result
+
+
 ![](./figs/projector.gif)
